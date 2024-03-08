@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Liste des inscriptions pour {{ nom }} {{ prenom }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Liste des inscriptions pour {{ nom }} {{ prenom }}</h1>
+
+        {% if inscriptions is not empty %}
+            <ul>
+                {% for inscription in inscriptions %}
+                    <li>{{ inscription.laformation.dateDebut|date('d/m/Y') }} - {{ inscription.laFormation.departement }}</li>
+                    <!-- Ajoutez d'autres champs d'inscription si nécessaire -->
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Aucune inscription trouvée pour {{ nom }} {{ prenom }}.</p>
+        {% endif %}
+    </div>
+{% endblock %}

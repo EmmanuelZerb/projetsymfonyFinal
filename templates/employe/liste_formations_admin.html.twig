@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des Formations</h1>
+
+    {% for formation in formations %}
+        <p>{{ formation.getDepartement() }} - {{ formation.getDateDebut()|date('Y-m-d') }}</p>
+        <a href="{{ path('supprimer_formation', {'formationId': formation.getId()}) }}">Supprimer</a>
+        <hr>
+    {% endfor %}
+    
+    <a href="{{ path('formation_create') }}">Créer Formation</a>
+    
+    <a href="{{ path('voir_demandes_inscription') }}">Voir Demandes Inscription</a>
+{% endblock %}

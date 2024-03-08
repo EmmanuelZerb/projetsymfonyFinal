@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Liste des employés
+{% endblock %}
+
+{% block body %}
+    <h1>Liste des employés</h1>
+
+    {% if ensEmployes is not empty %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Statut</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employe in ensEmployes %}
+                    <tr>
+                        <td>{{ nom }}</td>
+                        <td>{{ employe.prenom }}</td>
+                        <td>{{ statut }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucun employé trouvé.</p>
+    {% endif %}
+{% endblock %}

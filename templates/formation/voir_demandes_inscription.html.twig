@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Demandes d'Inscription en Attente</h1>
+
+    {# Ajoutez ici la logique nécessaire pour afficher les demandes d'inscription en attente #}
+    {# Par exemple, une boucle pour afficher les détails de chaque demande d'inscription #}
+    
+    {# Exemple (à adapter selon votre modèle de données) #}
+    {% for demande in demandesInscription %}
+        <p>
+            {% if demande.getLemploye() %}
+                {{ demande.getLemploye().getNom() }} - {{ demande.getLemploye().getPrenom() }} - {{ demande.getLaformation().getNom() }}
+                Statut: {{ demande.getStatut() }}
+                {# Ajoutez d'autres détails de la demande d'inscription selon votre modèle de données #}
+                <hr>
+            {% else %}
+                Erreur: Aucun employé associé à cette demande d'inscription.
+            {% endif %}
+        </p>
+    {% endfor %}
+{% endblock %}
