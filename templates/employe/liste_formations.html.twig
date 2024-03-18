@@ -1,11 +1,79 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <style>
+        /* CSS pour la liste des formations */
+        body {
+            background-color: #fff;
+            color: #000;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .inscription-link {
+            display: inline-block;
+            background-color: #000;
+            color: #fff;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+        }
+
+        .inscription-link:hover {
+            background-color: #333;
+        }
+
+        .inscription-link.disabled {
+            pointer-events: none;
+            background-color: #ccc;
+        }
+    </style>
+
     <h1>Liste des Formations</h1>
 
     {% for formation in formations %}
         <p>{{ formation.getDepartement() }} - {{ formation.getDateDebut()|date('Y-m-d') }}</p>
-        <a href="{{ path('employe_inscription', {'formationId': formation.getId()}) }}">S'inscrire</a>
+        <a href="#" onclick="handleInscription(this, '{{ path('employe_inscription', {'formationId': formation.getId()}) }}')" class="inscription-link">S'inscrire</a>
         <hr>
     {% endfor %}
+
+    <script>
+        function handleInscription(button, url) {
+            if (!button.classList.contains('disabled')) {
+                button.innerHTML = 'Attendre confirmation d\'un administrateur';
+                button.classList.add('disabled');
+                event.preventDefault();
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        // La demande a réussi
+                    } else {
+                        // La demande a échoué
+                    }
+                };
+                xhr.send();
+            }
+        }
+    </script>
+     <a href="{{ path('app_login') }}">Déconnexion</a>
 {% endblock %}

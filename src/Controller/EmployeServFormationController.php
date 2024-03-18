@@ -55,7 +55,7 @@ class EmployeServFormationController extends AbstractController
                 $entityManager->flush();
 
                 $this->addFlash('success', 'Formation créée avec succès.');
-                return $this->redirectToRoute('liste_formations');
+                return $this->redirectToRoute('liste_formations_admin');
             }
         } catch (\Exception $e) {
             $this->addFlash('error', 'Une erreur est survenue : ' . $e->getMessage());
@@ -88,10 +88,39 @@ class EmployeServFormationController extends AbstractController
 
         $this->addFlash('success', 'Formation supprimée avec succès.');
 
-        return $this->redirectToRoute('liste_formations');
+        return $this->redirectToRoute('liste_formations_admin');
     }
 
+    #[Route('/modifier-formation/{formationId}', name: 'modifier_formation')]
+public function modifierFormation($formationId, Request $request, ManagerRegistry $doctrine): Response
+{
+    $entityManager = $doctrine->getManager();
+    $formation = $entityManager->getRepository(Formation::class)->find($formationId);
 
+    if (!$formation) {
+        throw $this->createNotFoundException('Formation non trouvée');
+    }
+
+    $form = $this->createForm(FormationType::class, $formation);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Enregistrer les modifications dans la base de données
+        $entityManager->persist($formation);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Formation modifiée avec succès.');
+
+        return $this->redirectToRoute('liste_formations_admin');
+    }
+
+    return $this->render('formation/modifier_formation.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
+
+    
 
     #[Route('/employe/inscription/{formationId}', name: 'employe_inscription')]
     public function inscriptionAction(Request $request, $formationId, ManagerRegistry $doctrine, SessionInterface $session): Response
@@ -142,8 +171,31 @@ class EmployeServFormationController extends AbstractController
         $demandesInscription = $doctrine->getRepository(Inscription::class)->findBy(['statut' => 'En attente']);
     
         return $this->render('formation/voir_demandes_inscription.html.twig', [
-            'demandesInscription' => $demandesInscription,
+            'inscriptions' => $demandesInscription,
+
         ]);
     }
 
+    #[Route('/accepter-inscription/{inscriptionId}', name: 'accepter_inscription')]
+    public function accepterInscription(ManagerRegistry $doctrine): Response
+    {
+         // Récupérer les inscriptions en attente de validation
+         $demandesInscription = $doctrine->getRepository(Inscription::class)->findBy(['statut' => 'En Cours']);
+    
+         return $this->render('formation/voir_demandes_inscription.html.twig', [
+             'inscriptions' => $demandesInscription,
+        ]);
+    }
+
+    #[Route('/refuser-inscription/{inscriptionId}', name: 'refuser_inscription')]
+    public function refuserInscription(ManagerRegistry $doctrine): Response
+    {
+         // Récupérer les inscriptions en attente de validation
+         $demandesInscription = $doctrine->getRepository(Inscription::class)->findBy(['statut' => 'Refuser']);
+    
+         return $this->render('formation/voir_demandes_inscription.html.twig', [
+             'inscriptions' => $demandesInscription,
+        ]);
+    }
 }
+

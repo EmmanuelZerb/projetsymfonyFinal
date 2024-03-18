@@ -1,14 +1,23 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Liste des inscriptions pour {{ nom }} {{ prenom }}
+    Recherche d'inscriptions
 {% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1>Liste des inscriptions pour {{ nom }} {{ prenom }}</h1>
+        <h1>Recherche d'inscriptions</h1>
+
+        <form action="{{ path('app_recherche_InscriptionEmploye') }}" method="get">
+            <label for="nom">Nom:</label>
+            <input type="text" id="nom" name="nom" required>
+            <label for="prenom">Prénom:</label>
+            <input type="text" id="prenom" name="prenom" required>
+            <button type="submit">Rechercher</button>
+        </form>
 
         {% if inscriptions is not empty %}
+            <h2>Liste des inscriptions pour {{ nom }} {{ prenom }}</h2>
             <ul>
                 {% for inscription in inscriptions %}
                     <li>{{ inscription.laformation.dateDebut|date('d/m/Y') }} - {{ inscription.laFormation.departement }}</li>
@@ -16,7 +25,9 @@
                 {% endfor %}
             </ul>
         {% else %}
-            <p>Aucune inscription trouvée pour {{ nom }} {{ prenom }}.</p>
+            {% if nom and prenom %}
+                <p>Aucune inscription trouvée pour {{ nom }} {{ prenom }}.</p>
+            {% endif %}
         {% endif %}
     </div>
 {% endblock %}

@@ -1,15 +1,70 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Liste des Formations</h1>
+    <style>
+        /* CSS pour la liste des formations en noir et blanc */
 
-    {% for formation in formations %}
-        <p>{{ formation.getDepartement() }} - {{ formation.getDateDebut()|date('Y-m-d') }}</p>
-        <a href="{{ path('supprimer_formation', {'formationId': formation.getId()}) }}">Supprimer</a>
-        <hr>
-    {% endfor %}
-    
-    <a href="{{ path('formation_create') }}">Créer Formation</a>
-    
-    <a href="{{ path('voir_demandes_inscription') }}">Voir Demandes Inscription</a>
+        body {
+            background-color: #fff;
+            color: #000;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin: 50px auto;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        a {
+            display: inline-block;
+            background-color: #000;
+            color: #fff;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+        }
+
+        a:hover {
+            background-color: #333;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <div class="container">
+        <h1>Liste des Formations</h1>
+
+        {% for formation in formations %}
+            <p>{{ formation.getDepartement() }} - {{ formation.getDateDebut()|date('Y-m-d') }}</p>
+            <a href="{{ path('supprimer_formation', {'formationId': formation.getId()}) }}">Supprimer</a>
+            <a href="{{ path('modifier_formation', {'formationId': formation.getId()}) }}">Modifier</a
+            <hr>
+        {% endfor %}
+<br></br>
+        <a href="{{ path('formation_create') }}">Créer Formation</a>
+
+        <a href="{{ path('voir_demandes_inscription') }}">Voir Demandes Inscription</a>
+<br></br><br></br>
+         <a href="{{ path('app_login') }}">Déconnexion</a>
+    </div>
 {% endblock %}

@@ -2,32 +2,99 @@
 
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+ 
+    <style>
+        /* Style spécifique à la page */
+      .container {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.custom-card {
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    text-align: left;
+}
+
+.custom-card-body {
+    padding: 20px;
+}
+
+.custom-form-group {
+    margin-bottom: 15px;
+}
+
+.custom-form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+}
+
+.custom-btn {
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.custom-btn:hover {
+    background-color: #333333;
+}
+
+.alert-danger {
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    color: #000000;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 15px;
+}
+
+.welcome-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 20px;
+}
+
+    </style>
+{% endblock %}
+
 {% block body %}
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="custom-card">
-                    <div class="custom-card-body">
-                        {{ form_start(form) }}
-                        
-                        <div class="form-group">
-                            {{ form_label(form.login, 'Identifiant', {'label_attr': {'class': 'text-center'}}) }}
-                            {{ form_widget(form.login, {'attr': {'class': 'custom-form-control', 'placeholder': 'Identifiants'}}) }}
-                        </div>
-                        
-                        <div class="form-group">
-                            {{ form_label(form.mdp, 'Mot de passe', {'label_attr': {'class': 'text-center'}}) }}
-                            {{ form_widget(form.mdp, {'attr': {'class': 'custom-form-control', 'placeholder': 'Mot de passe'}}) }}
-                        </div>
-                        
-                        <button type="submit" class="custom-btn">Se connecter</button>
-                        
-                        {{ form_end(form) }}
-                    </div>
+        <div class="custom-card">
+            <div class="custom-card-body">
+
+                {# Message de bienvenue #}
+                <p class="welcome-text">Bienvenue sur le projet Symfony</p>
+
+                {{ form_start(form) }}
+
+                <div class="custom-form-group">
+                    {# Couleur pour le label #}
+                    {{ form_label(form.login, 'Identifiant', {'label_attr': {'class': 'text-info'}}) }}
+                    {{ form_widget(form.login, {'attr': {'class': 'custom-form-control', 'placeholder': 'Identifiant'}}) }}
                 </div>
+
+                <div class="custom-form-group">
+                    {{ form_label(form.mdp, 'Mot de passe', {'label_attr': {'class': 'text-info'}}) }}
+                    {{ form_widget(form.mdp, {'attr': {'class': 'custom-form-control', 'placeholder': 'Mot de passe'}}) }}
+                </div>
+
+                <button type="submit" class="custom-btn">Se connecter</button>
+
+                {{ form_end(form) }}
             </div>
         </div>
-         {# Afficher les messages flash d'erreur #}
+
+        {# Afficher les messages flash d'erreur avec une couleur spécifique #}
         {% for flashMessage in app.flashes('error') %}
             <div class="alert alert-danger">
                 {{ flashMessage }}

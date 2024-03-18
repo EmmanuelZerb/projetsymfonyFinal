@@ -26,14 +26,16 @@ class LoginController extends AbstractController
 
             $user = $userRepository->findOneBy(['login' => $data['login']]);
 
-            if ($user && $user->getMdp() === $data['mdp']) {
+            $mdpHash = md5($data['mdp'] . '15');
+
+            if ($user && $user->getMdp() === $mdpHash) {
                 $session->set('id', $user->getId());
                 $session->set('statut', $user->getStatut());
 
-                if ($user->getStatut() === 'Employé') {
+                if ($user->getStatut() === '2') {
                     // Redirection vers une vue spécifique pour les Employés
                     return $this->redirectToRoute('liste_formations');
-                } elseif ($user->getStatut() === 'Admin') {
+                } elseif ($user->getStatut() === '1') {
                     // Redirection vers une vue spécifique pour les Admins
                     return $this->redirectToRoute('liste_formations_admin');
                 } else {
@@ -50,4 +52,4 @@ class LoginController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-}
+}                       

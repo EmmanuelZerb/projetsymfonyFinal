@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Recherche d'inscriptions
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Recherche d'inscriptions</h1>
+
+        <form action="{{ path('app_recherche_InscriptionLibelle') }}" method="get">
+            <label for="nom">Libelle:</label>
+            <input type="text" id="libelle" name="libelle" required>
+            <button type="submit">Rechercher</button>
+        </form>
+
+        {% if inscriptions is not empty %}
+            <h2>Liste des inscriptions pour {{ libelle }}</h2>
+            <ul>
+                {% for inscription in inscriptions %}
+                    <li>{{ Produit.leProduit.inscription }}</li>
+                    <!-- Ajoutez d'autres champs d'inscription si nécessaire -->
+                {% endfor %}
+            </ul>
+        {% else %}
+            {% if libelle %}
+                <p>Aucune inscription trouvée pour {{ libelle}} .</p>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}

@@ -8,6 +8,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Employe;
 use App\Controller\RechercheController;
 use App\Entity\Inscription;
+use Symfony\Component\HttpFoundation\Request;
+use App\Entity\Produit;
 
 class RechercheController extends AbstractController
 {
@@ -35,13 +37,40 @@ class RechercheController extends AbstractController
 
     
     #[Route('/rechercheInscrEmploye', name: 'app_recherche_InscriptionEmploye')]
-    public function rechercheInscrEmployeAction(ManagerRegistry $doctrine)
+    public function rechercheInscrEmployeAction(Request $request, ManagerRegistry $doctrine)
     {
-        $inscriptions = $doctrine->getManager()->getRepository(Inscription::class)->rechInscriptionsEmploye('Castaing','toto');
-        //var_dump($inscriptions);
-        //exit;
-        return $this->render('recherche/inscription.html.twig', array ('inscriptions' => $inscriptions, 'nom' => 'Castaing','prenom' =>'toto'));
+        $nom = $request->query->get('nom');
+        $prenom = $request->query->get('prenom');
+    
+        if ($nom && $prenom) {
+            $inscriptions = $doctrine->getManager()->getRepository(Inscription::class)->rechInscriptionsEmploye($nom, $prenom);
+        } else {
+            $inscriptions = []; // Ou tout autre traitement que vous jugez nécessaire en cas de champs manquants
+        }
+    
+        return $this->render('recherche/inscription.html.twig', [
+            'inscriptions' => $inscriptions,
+            'nom' => $nom,
+            'prenom' => $prenom
+        ]);
     }
+    #[Route('/rechercheInscrLibelle', name: 'app_recherche_InscriptionLibelle')]
+     public function rechercheInscrLibelleAction(Request $request, ManagerRegistry $doctrine)
+    {
+        $libelle = $request->query->get('libelle');
+     
+    
+        if ($libelle) {
+            $inscriptions = $doctrine->getManager()->getRepository(produit::class)->find($libelle);
+        } else {
+            $inscriptions = []; // Ou tout autre traitement que vous jugez nécessaire en cas de champs manquants
+        }
+    
+        return $this->render('recherche/inscriptionLibelle.html.twig', [
+            'inscriptions' => $inscriptions,
+            'libelle' => $libelle
+        ]);
     }
+}
 
 

@@ -4,29 +4,76 @@
     Liste des employés
 {% endblock %}
 
-{% block body %}
-    <h1>Liste des employés</h1>
+{% block stylesheets %}
+    <style>
+        .container {
+            margin-top: 50px;
+            text-align: center;
+        }
 
-    {% if ensEmployes is not empty %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Prenom</th>
-                    <th>Statut</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for employe in ensEmployes %}
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #000000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        thead {
+            background-color: #f8f9fa;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tbody tr:hover {
+            background-color: #e9ecef;
+        }
+
+        p {
+            font-size: 18px;
+            font-weight: bold;
+            color: #000000;
+            margin-top: 20px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Liste des employés</h1>
+
+        {% if ensEmployes is not empty %}
+            <table>
+                <thead>
                     <tr>
-                        <td>{{ nom }}</td>
-                        <td>{{ employe.prenom }}</td>
-                        <td>{{ statut }}</td>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Statut</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>Aucun employé trouvé.</p>
-    {% endif %}
+                </thead>
+                <tbody>
+                    {% for employe in ensEmployes %}
+                        <tr>
+                            <td>{{ nom }}</td>
+                            <td>{{ employe.prenom }}</td>
+                            <td>{{ statut }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Aucun employé trouvé.</p>
+        {% endif %}
+    </div>
 {% endblock %}
