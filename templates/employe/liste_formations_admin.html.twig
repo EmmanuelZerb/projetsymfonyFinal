@@ -2,69 +2,141 @@
 
 {% block body %}
     <style>
-        /* CSS pour la liste des formations en noir et blanc */
+        /* CSS avec des couleurs vibrantes et des fonctionnalités d'expérience utilisateur */
 
         body {
-            background-color: #fff;
-            color: #000;
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa; /* Gris clair */
             margin: 0;
             padding: 0;
+            color: #333; /* Couleur de texte principale */
         }
 
         .container {
-            margin: 50px auto;
             max-width: 800px;
-            text-align: center;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff; /* Blanc */
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
-            font-size: 24px;
+            color: #8139A2; /* Orange */
+            text-align: center;
             margin-bottom: 20px;
         }
 
         p {
             font-size: 18px;
+            line-height: 1.6;
             margin-bottom: 10px;
         }
 
-        a {
-            display: inline-block;
-            background-color: #000;
+        .action-button {
+            background-color: #ff6b6b; /* Rouge */
             color: #fff;
-            padding: 8px 16px;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-            margin-right: 10px;
-        }
-
-        a:hover {
-            background-color: #333;
-        }
-
-        hr {
             border: none;
-            border-top: 1px solid #ccc;
-            margin-top: 20px;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .action-button:hover {
+            background-color: #ff8787; /* Rouge clair au survol */
+        }
+
+        .secondary-action-button {
+            background-color: #4bc0c8; /* Turquoise */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .secondary-action-button:hover {
+            background-color: #6ed3dc; /* Turquoise clair au survol */
+        }
+
+        .navbar {
+            background-color: #605ca8; /* Violet foncé */
+            padding: 15px 0;
+            text-align: center;
             margin-bottom: 20px;
         }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 4px;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #524e94; /* Violet clair au survol */
+        }
+
+        /* Nouvelle couleur de fond et style pour la section Liste des Formations */
+
+        .formation-section {
+            background-color: #F5E6FC; 
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .formation-section:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+
+        .formation-section p {
+            margin-bottom: 5px;
+        }
+
+        .formation-section hr {
+            margin-top: 15px;
+            margin-bottom: 15px;
+            border-color: #ccc;
+        }
     </style>
+
+    <div class="navbar">
+        <a href="{{ path('app_login') }}">Déconnexion</a>
+        <a href="{{ path('voir_demandes_inscription') }}">Voir Demandes Inscription</a>
+        <a href="{{ path('formation_create') }}">Créer Formation</a>
+    </div>
 
     <div class="container">
         <h1>Liste des Formations</h1>
 
         {% for formation in formations %}
-            <p>{{ formation.getDepartement() }} - {{ formation.getDateDebut()|date('Y-m-d') }}</p>
-            <a href="{{ path('supprimer_formation', {'formationId': formation.getId()}) }}">Supprimer</a>
-            <a href="{{ path('modifier_formation', {'formationId': formation.getId()}) }}">Modifier</a
-            <hr>
+            <div class="formation-section">
+                <p>
+                   
+                    <strong>Nombres d'heures :</strong> {{formation.getNombreHeures() }}<br>
+                    <strong>Produit :</strong> {{ formation.getLeproduit() }}<br>
+                    <strong>Département :</strong>  {{ formation.getDepartement() }}<br>
+                    <strong>Date de début :</strong>  {{ formation.getDateDebut()|date('Y-m-d') }}
+                </p>
+                <br>
+                <a href="{{ path('supprimer_formation', {'formationId': formation.getId()}) }}" class="action-button">Supprimer</a>
+                <a href="{{ path('modifier_formation', {'formationId': formation.getId()}) }}" class="secondary-action-button">Modifier</a>
+                <hr>
+            </div>
         {% endfor %}
-<br></br>
-        <a href="{{ path('formation_create') }}">Créer Formation</a>
-
-        <a href="{{ path('voir_demandes_inscription') }}">Voir Demandes Inscription</a>
-<br></br><br></br>
-         <a href="{{ path('app_login') }}">Déconnexion</a>
     </div>
 {% endblock %}

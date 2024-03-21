@@ -1,0 +1,20 @@
+{% set inscriptionsEnAttente = false %}
+
+{% for inscription in ensInscription %}
+    {% if  inscription.lemploye.id == employeId %}
+        <div>
+            <b>Libelle du produit : </b> {{ inscription.laformation.leproduit.libelle }}<br/>
+            <b>Département : </b> {{ inscription.laformation.departement }}<br/>
+            <b>Nombre d'heures : </b> {{ inscription.laformation.nombreHeures }}<br/>
+            <b>Date de Début : </b> {{ inscription.laFormation.dateDebut | date("m/d/Y") }}<br/>
+            <b>Statut de la formation : </b> {{ inscription.statut }}<br/><br/>
+        </div>
+        {% set inscriptionsEnAttente = true %}
+    {% endif %}
+{% endfor %}
+
+{% if not inscriptionsEnAttente %}
+    <p>Il n'y a pas d'inscriptions pour le moment.</p>
+{% endif %}
+
+<a href="{{ path('liste_formations') }}" class="btn btn-primary">Retour</a>

@@ -1,58 +1,54 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block stylesheets %}
     <style>
-        /* CSS pour la liste des formations */
-        body {
-            background-color: #fff;
-            color: #000;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            margin-top: 50px;
-            text-align: center;
-        }
-
+        /* Styles spécifiques pour la liste des formations */
         h1 {
             font-size: 24px;
             margin-bottom: 20px;
         }
 
         p {
-            font-size: 18px;
-            color: #333;
-            margin-bottom: 10px;
+            font-size: 16px;
+            margin-bottom: 5px;
         }
 
-        .inscription-link {
+        a {
             display: inline-block;
-            background-color: #000;
+            padding: 5px 10px;
+            background-color: #007bff;
             color: #fff;
-            padding: 8px 16px;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 4px;
             transition: background-color 0.3s;
-            margin-right: 10px;
         }
 
-        .inscription-link:hover {
-            background-color: #333;
+        a:hover {
+            background-color: #0056b3;
         }
 
-        .inscription-link.disabled {
+        hr {
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-top: 1px solid #ccc;
+        }
+
+        .disabled {
             pointer-events: none;
-            background-color: #ccc;
+            background-color: #ccc !important;
+            cursor: not-allowed;
         }
     </style>
+{% endblock %}
+
+{% block body %}
 
     <h1>Liste des Formations</h1>
 
     {% for formation in formations %}
-        <p>{{ formation.getDepartement() }} - {{ formation.getDateDebut()|date('Y-m-d') }}</p>
-        <a href="#" onclick="handleInscription(this, '{{ path('employe_inscription', {'formationId': formation.getId()}) }}')" class="inscription-link">S'inscrire</a>
+        <p>{{formation.getNombreHeures() }}h - {{ formation.getLeproduit() }} - {{ formation.getDepartement() }} - {{ formation.getDateDebut()|date('Y-m-d') }}</p>
+        <a href="#" onclick="handleInscription(this, '{{ path('employe_inscription', {'formationId': formation.getId()}) }}')" >S'inscrire</a>
         <hr>
     {% endfor %}
 
@@ -75,5 +71,11 @@
             }
         }
     </script>
-     <a href="{{ path('app_login') }}">Déconnexion</a>
+    
+    <a href="{{ path('app_login') }}">Déconnexion</a>
+    <a href="{{ path('status_Formation') }}">Status des formations</a>
+    <a href="{{ path('status_Formation_En_Attente') }}">Formations En Attente</a>
+    <a href="{{ path('status_Formation_accepte') }}">formations Accpetée</a>
+    <a href="{{ path('status_Formation_refuse') }}">Formations Refusée</a>
+    
 {% endblock %}

@@ -177,25 +177,90 @@ public function modifierFormation($formationId, Request $request, ManagerRegistr
     }
 
     #[Route('/accepter-inscription/{inscriptionId}', name: 'accepter_inscription')]
-    public function accepterInscription(ManagerRegistry $doctrine): Response
+    public function accepterInscription(Request $request, int $inscriptionId, ManagerRegistry $doctrine): Response
     {
-         // Récupérer les inscriptions en attente de validation
-         $demandesInscription = $doctrine->getRepository(Inscription::class)->findBy(['statut' => 'En Cours']);
-    
-         return $this->render('formation/voir_demandes_inscription.html.twig', [
-             'inscriptions' => $demandesInscription,
-        ]);
+       // Récupérer l'inscription à partir de son ID
+       $inscription = $doctrine->getRepository(Inscription::class)->find($inscriptionId);
+
+       // Effectuer le traitement pour accepter la demande d'inscription, par exemple, changer le statut
+       $inscription->setStatut('En cours');
+
+       // Enregistrer les modifications dans la base de données
+       $entityManager = $doctrine->getManager();
+       $entityManager->persist($inscription);
+       $entityManager->flush();
+
+       // Rediriger l'utilisateur vers une autre page
+       return $this->redirectToRoute('voir_demandes_inscription');
     }
 
     #[Route('/refuser-inscription/{inscriptionId}', name: 'refuser_inscription')]
-    public function refuserInscription(ManagerRegistry $doctrine): Response
+    public function refuserInscription(Request $request, int $inscriptionId, ManagerRegistry $doctrine): Response
     {
-         // Récupérer les inscriptions en attente de validation
-         $demandesInscription = $doctrine->getRepository(Inscription::class)->findBy(['statut' => 'Refuser']);
-    
-         return $this->render('formation/voir_demandes_inscription.html.twig', [
-             'inscriptions' => $demandesInscription,
-        ]);
+         // Récupérer l'inscription à partir de son ID
+        $inscription = $doctrine->getRepository(Inscription::class)->find($inscriptionId);
+
+        // Effectuer le traitement pour refuser la demande d'inscription, par exemple, changer le statut
+        $inscription->setStatut('Refusée');
+
+        // Enregistrer les modifications dans la base de données
+        $entityManager = $doctrine->getManager();
+        $entityManager->persist($inscription);
+        $entityManager->flush();
+
+        // Rediriger l'utilisateur vers une autre page
+        return $this->redirectToRoute('voir_demandes_inscription');
     }
+
+    #[Route('/Status_Formation',name: 'status_Formation')]
+    public function StatusFormation(ManagerRegistry $doctrine,SessionInterface $session)
+    {
+        $inscriptions = $doctrine->getManager()->getRepository(Inscription::class)->findAll();
+        $employeId = $session->get('id');
+        
+        if(!$inscriptions){
+            $message="Aucune inscriptions en attente";
+        }
+        else{
+            $message=null;
+        }
+        return $this->render('formation/status_formation.html.twig',array(
+            'ensInscription'=>$inscriptions,
+            'employeId' => $employeId,
+            'message'=>$message));
+    }
+
+    #[Route('/Status_Formation_Accepte',name: 'status_Formation_accepte')]
+    public function StatusFormationAccepte(ManagerRegistry $doctrine,SessionInterface $session)
+    {
+        $inscriptions = $doctrine->getManager()->getRepository(Inscription::class)->findAll();
+        $employeId = $session->get('id');
+      
+        return $this->render('formation/status_formation_accepte.html.twig',array(
+            'ensInscription'=>$inscriptions,
+            'employeId' => $employeId));
+    }
+    #[Route('/Status_Formation_Refuse',name: 'status_Formation_refuse')]
+    public function StatusFormationRefuse(ManagerRegistry $doctrine,SessionInterface $session)
+    {
+        $inscriptions = $doctrine->getManager()->getRepository(Inscription::class)->findAll();
+        $employeId = $session->get('id');
+    
+        return $this->render('formation/status_formation_refuse.html.twig',array(
+            'ensInscription'=>$inscriptions,
+            'employeId' => $employeId));
+    }
+
+    #[Route('/Status_Formation_En_Attente',name: 'status_Formation_En_Attente')]
+    public function StatusFormationEnAttente(ManagerRegistry $doctrine,SessionInterface $session)
+    {
+        $inscriptions = $doctrine->getManager()->getRepository(Inscription::class)->findAll();
+        $employeId = $session->get('id');
+ 
+        return $this->render('formation/status_formation_en_attente.html.twig',array(
+            'ensInscription'=>$inscriptions,
+            'employeId' => $employeId));
+    }
+    
 }
 

@@ -3,102 +3,106 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
- 
     <style>
-        /* Style spécifique à la page */
-      .container {
-    margin-top: 50px;
-    text-align: center;
-}
+        /* Reset des styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.custom-card {
-    background-color: #ffffff;
-    border: 1px solid #000000;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: inline-block;
-    text-align: left;
-}
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
 
-.custom-card-body {
-    padding: 20px;
-}
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-.custom-form-group {
-    margin-bottom: 15px;
-}
+        p {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #333;
+        }
 
-.custom-form-control {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #000000;
-    border-radius: 5px;
-}
+        form {
+            margin-bottom: 20px;
+        }
 
-.custom-btn {
-    background-color: #000000;
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
+        .custom-form-control {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
 
-.custom-btn:hover {
-    background-color: #333333;
-}
+        .custom-form-control:focus {
+            border-color: #007bff;
+            outline: none;
+        }
 
-.alert-danger {
-    background-color: #ffffff;
-    border: 1px solid #000000;
-    color: #000000;
-    border-radius: 5px;
-    padding: 10px;
-    margin-top: 15px;
-}
+        button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
 
-.welcome-text {
-    font-size: 18px;
-    font-weight: bold;
-    color: #000000;
-    margin-bottom: 20px;
-}
+        button:hover {
+            background-color: #0056b3;
+        }
 
+        .text-info {
+            color: #007bff;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+        }
     </style>
 {% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="custom-card">
-            <div class="custom-card-body">
 
-                {# Message de bienvenue #}
-                <p class="welcome-text">Bienvenue sur le projet Symfony</p>
+<div class="container">
+    {# Message de bienvenue #}
+    <p>Bienvenue sur le projet Symfony</p>
 
-                {{ form_start(form) }}
+    {{ form_start(form) }}
 
-                <div class="custom-form-group">
-                    {# Couleur pour le label #}
-                    {{ form_label(form.login, 'Identifiant', {'label_attr': {'class': 'text-info'}}) }}
-                    {{ form_widget(form.login, {'attr': {'class': 'custom-form-control', 'placeholder': 'Identifiant'}}) }}
-                </div>
+    {# Couleur pour le label #}
+    {{ form_label(form.login, 'Identifiant', {'label_attr': {'class': 'text-info'}}) }}
+    {{ form_widget(form.login, {'attr': {'class': 'custom-form-control', 'placeholder': 'Identifiant'}}) }}
 
-                <div class="custom-form-group">
-                    {{ form_label(form.mdp, 'Mot de passe', {'label_attr': {'class': 'text-info'}}) }}
-                    {{ form_widget(form.mdp, {'attr': {'class': 'custom-form-control', 'placeholder': 'Mot de passe'}}) }}
-                </div>
+    {{ form_label(form.mdp, 'Mot de passe', {'label_attr': {'class': 'text-info'}}) }}
+    {{ form_widget(form.mdp, {'attr': {'class': 'custom-form-control', 'placeholder': 'Mot de passe'}}) }}
 
-                <button type="submit" class="custom-btn">Se connecter</button>
 
-                {{ form_end(form) }}
-            </div>
+    <button>Se connecter</button>
+
+    {{ form_end(form) }}
+
+    {# Afficher les messages flash d'erreur avec une couleur spécifique #}
+    {% for flashMessage in app.flashes('error') %}
+        <div class="error-message">
+            {{ flashMessage }}
         </div>
+    {% endfor %}
+</div>
 
-        {# Afficher les messages flash d'erreur avec une couleur spécifique #}
-        {% for flashMessage in app.flashes('error') %}
-            <div class="alert alert-danger">
-                {{ flashMessage }}
-            </div>
-        {% endfor %}
-    </div>
 {% endblock %}

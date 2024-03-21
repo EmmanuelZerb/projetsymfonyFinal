@@ -4,12 +4,12 @@
     <h1>Demandes d'Inscription en Attente</h1>
     {% for inscription in inscriptions %}
         {% if inscription.statut == 'En attente' %}
-            <p>{{ inscription.lemploye.prenom }} - {{ inscription.lemploye.nom }} - {{ inscription.laformation.getDepartement() }} - {{ inscription.laformation.getDateDebut()|date('Y-m-d') }}</p>
-          <form action="{{ path('accepter_inscription', {'inscriptionId': demande.getId()}) }}" method="post">
+            <p>{{ inscription.lemploye.prenom }} - {{ inscription.lemploye.nom }} - {{inscription.laformation.getNombreHeures}}h - {{inscription.laformation.getLeproduit}} -{{ inscription.laformation.getDepartement() }} - {{ inscription.laformation.getDateDebut()|date('Y-m-d') }}</p>
+          <form action="{{ path('accepter_inscription', {'inscriptionId': inscription.getId()}) }}" method="post">
                         <button type="submit">Accepter</button>
-                    </form>
+                    </form>     
 
-                    <form action="{{ path('refuser_inscription', {'inscriptionId': demande.getId()}) }}" method="post">
+                    <form action="{{ path('refuser_inscription', {'inscriptionId': inscription.getId()}) }}" method="post">
                         <button type="submit">Refuser</button>
                     </form>
         {% endif %}
